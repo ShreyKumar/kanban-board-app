@@ -11,13 +11,10 @@ from db import init_db, get_board, update_board
 class BoardUpdateRequest(BaseModel):
     data: Dict[str, Any]
 
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    # Initialize DB on startup
-    init_db()
-    yield
+# Trigger DB initialization identically on Vercel cold starts and Docker startup
+init_db()
 
-app = FastAPI(lifespan=lifespan)
+app = FastAPI()
 
 @app.get("/api/health")
 async def health_check():
