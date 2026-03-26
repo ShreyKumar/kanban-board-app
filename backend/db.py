@@ -2,7 +2,10 @@ import sqlite3
 import json
 import os
 
-DB_PATH = os.path.join(os.path.dirname(__file__), "pm.db")
+if os.environ.get("VERCEL"):
+    DB_PATH = "/tmp/pm.db"
+else:
+    DB_PATH = os.path.join(os.path.dirname(__file__), "pm.db")
 
 def get_db():
     conn = sqlite3.connect(DB_PATH)
